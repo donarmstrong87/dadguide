@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime, timezone
+from pathlib import Path
 
 import praw
 from dotenv import load_dotenv
@@ -9,6 +11,8 @@ from dotenv import load_dotenv
 from config import load_config
 
 load_dotenv()
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def reddit_client() -> praw.Reddit:
@@ -48,6 +52,14 @@ def discover(limit: int = 100) -> list[dict]:
     return found
 
 
+def save_snapshot(items: list[dict]) -> Path:
+    output = Path(os.getenv("DISCOVERY_OUTPUT", ROOT / "data" / "latest-discovery.json"))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps({"generated_at": datetime.now(timezone.utc).isoformat(), "items": items}, indent=2), encoding="utf-8")
+    return output
+
+
 if __name__ == "__main__":
-    for item in discover():
-        print(item)
+    items = discover(limit=int(os.getenv("DISCOVERY_LIMIT", "100")))
+    output = save_snapshot(items)
+    print(f"Discovered {len(items)} matching posts; snapshot: {output}")
