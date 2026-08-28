@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DadGuide Reddit Growth</title>
+  <style>
+    body{font-family:Inter,system-ui,sans-serif;background:#f6f7f9;color:#17202a;margin:0}.wrap{max-width:1200px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}.card{background:#fff;border:1px solid #e3e6ea;border-radius:12px;padding:18px}.metric{font-size:28px;font-weight:750}.muted{color:#6b7280}.post{background:#fff;border:1px solid #e3e6ea;border-radius:12px;padding:18px;margin:12px 0}.score{font-weight:800}.high{font-size:13px;padding:4px 8px;border-radius:999px;background:#eef8f0}.actions{display:flex;gap:8px;margin-top:12px}button{border:0;border-radius:8px;padding:9px 13px;cursor:pointer;background:#17202a;color:#fff}button.secondary{background:#e9edf2;color:#17202a}.draft{background:#fbfcfd;border-left:4px solid #17202a;padding:14px;margin-top:12px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:800px){.grid,.cols{grid-template-columns:1fr 1fr}.top{display:block}}@media(max-width:520px){.grid,.cols{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><h1>DadGuide Reddit Growth</h1><div class="muted">90-day acquisition experiment · human-approved publishing</div></div>
+    <form method="post" action="/discover"><input type="hidden" name="limit" value="50"><button>Run discovery</button></form>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="muted">Discovered</div><div class="metric">{{ metrics.opportunities }}</div></div>
+    <div class="card"><div class="muted">High value ≥75</div><div class="metric">{{ metrics.high_value }}</div></div>
+    <div class="card"><div class="muted">Pending drafts</div><div class="metric">{{ metrics.drafts }}</div></div>
+    <div class="card"><div class="muted">Published</div><div class="metric">{{ metrics.published }}</div></div>
+  </div>
+  <div class="cols">
+    <section><h2>Top opportunities</h2>
+      {% for p in posts %}
+      <article class="post">
+        <div class="muted">r/{{ p.subreddit }} · {{ p.comments }} comments · {{ p.score }} points</div>
+        <h3>{{ p.title }}</h3>
+        <div><span class="score">{{ p.opportunity }}/100</span> opportunity <span class="high">{{ p.status }}</span></div>
+        <p>{{ (p.body or '')[:500] }}</p>
+        <div class="actions"><a href="{{ p.permalink }}" target="_blank"><button type="button" class="secondary">Open Reddit</button></a>
+        <form method="post" action="/draft/{{ p.id }}"><button>Generate draft</button></form></div>
+      </article>
+      {% else %}<div class="card">No opportunities yet. Run discovery.</div>{% endfor %}
+    </section>
+    <section><h2>Approval queue</h2>
+      {% for d in pending %}
+      <article class="post"><div class="muted">r/{{ d.subreddit }}</div><h3>{{ d.title }}</h3>
+        <div class="draft">{{ d.content }}</div>
+        <div class="actions">
+          <form method="post" action="/draft/{{ d.id }}/publish" onsubmit="return confirm('Publish this comment to Reddit now?')"><button>Approve & publish</button></form>
+          <form method="post" action="/draft/{{ d.id }}/reject"><button class="secondary">Reject</button></form>
+        </div>
+      </article>
+      {% else %}<div class="card">No pending drafts.</div>{% endfor %}
+    </section>
+  </div>
+</div>
+</body></html>
