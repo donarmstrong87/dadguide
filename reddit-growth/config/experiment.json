@@ -1,0 +1,69 @@
+{
+  "experiment": {
+    "name": "DadGuide Reddit Acquisition Experiment",
+    "duration_days": 90,
+    "start_day": 1,
+    "signup_target": { "min": 500, "stretch": 1500 },
+    "primary_metric": "cost_per_retained_user",
+    "secondary_metrics": [
+      "qualified_visitors",
+      "signups",
+      "activation_rate",
+      "day_7_retention",
+      "day_30_retention",
+      "paid_conversion",
+      "cac",
+      "mrr"
+    ]
+  },
+  "subreddits": [
+    "daddit",
+    "NewDads",
+    "predaddit",
+    "Parenting",
+    "NewParents",
+    "Fatherhood",
+    "Dads"
+  ],
+  "keywords": [
+    "new dad",
+    "first time dad",
+    "becoming a father",
+    "newborn",
+    "baby coming",
+    "pregnant wife",
+    "fatherhood",
+    "dad advice",
+    "overwhelmed dad",
+    "useless dad",
+    "newborn sleep",
+    "what should dads know",
+    "support my wife",
+    "parenting help"
+  ],
+  "positioning_angles": [
+    "prepared_dad",
+    "daily_guidance",
+    "new_dad_survival",
+    "dad_partner",
+    "confidence"
+  ],
+  "workflow": {
+    "discovery_requires_rule_check": true,
+    "auto_publish": false,
+    "human_approval_required": true,
+    "duplicate_content_block": true,
+    "max_daily_promotion_posts": 2,
+    "max_daily_comments": 10,
+    "min_hours_between_promotional_posts": 8
+  },
+  "scoring": {
+    "relevance": 10,
+    "audience_match": 10,
+    "problem_severity": 10,
+    "engagement_potential": 10,
+    "value_fit": 10,
+    "promotion_opportunity": 10,
+    "rule_risk": 10
+  }
+}
