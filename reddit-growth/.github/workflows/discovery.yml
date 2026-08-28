@@ -23,4 +23,11 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
           REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          DISCOVERY_LIMIT: '100'
         run: python src/discover.py
+      - name: Upload discovery snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: reddit-discovery-${{ github.run_id }}
+          path: reddit-growth/data/latest-discovery.json
+          retention-days: 14
