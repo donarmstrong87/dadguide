@@ -2,12 +2,49 @@
 
 A 90-day, community-first Reddit acquisition experiment for DadGuide.
 
-## Principles
+## What is implemented
 
-- Automate discovery, scoring, drafting, attribution, analytics, and reporting.
-- Keep publishing/commenting human-approved by default.
-- Never mass-post, duplicate promotional content, impersonate users, or bypass subreddit rules.
-- Optimize for activated and retained DadGuide users, not karma or impressions.
+- Reddit discovery worker using PRAW.
+- Keyword filtering across target communities.
+- Opportunity scoring.
+- Local SQLite operator dashboard.
+- AI-assisted response drafting with an offline fallback.
+- Explicit human approval before Reddit publishing.
+- Discovery snapshots for scheduled automation.
+- GitHub Actions discovery every 4 hours.
+- Artifact retention for discovery snapshots.
+- UTM attribution helper.
+- PostgreSQL production schema for a future hosted deployment.
+
+## Important Reddit compliance model
+
+The system does **not** run an unattended comment/post loop. Discovery and analysis are automated, but publishing is a distinct human-triggered action. Reddit's current Developer Platform requires explicit user permission/manual action for user-authorized posting/commenting and emphasizes avoiding spam-like experiences.
+
+## Local setup
+
+```bash
+cd reddit-growth
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+python src/app.py
+```
+
+Then open `http://127.0.0.1:8080`.
+
+### Credentials
+
+Set Reddit credentials in `.env` for discovery/publishing and `OPENAI_API_KEY` for AI drafting. If no OpenAI key is configured, the dashboard uses a safe deterministic fallback draft.
+
+For GitHub Actions, add these repository secrets:
+
+- `REDDIT_CLIENT_ID`
+- `REDDIT_CLIENT_SECRET`
+- `REDDIT_USER_AGENT`
+- `REDDIT_USERNAME`
+
+The scheduled workflow stores a discovery snapshot as a GitHub Actions artifact. It does not publish comments.
 
 ## 90-day experiment
 
@@ -44,6 +81,6 @@ Community rules must be checked before any promotional activity.
 
 `Reddit discovery → relevance scoring → rule/risk check → opportunity queue → AI draft → human approval → publish → UTM attribution → product analytics → weekly optimization`
 
-## Environment variables
+## Security
 
-See `.env.example`. Never commit Reddit, OpenAI, analytics, or database secrets.
+Never commit `.env`, Reddit credentials, OpenAI keys, database credentials, or generated discovery data. The repository `.gitignore` covers local secrets and generated files.
