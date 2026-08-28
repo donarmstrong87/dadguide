@@ -1,0 +1,24 @@
+name: DadGuide Reddit Growth Tests
+
+on:
+  push:
+    paths:
+      - 'reddit-growth/**'
+  pull_request:
+    paths:
+      - 'reddit-growth/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: reddit-growth
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt pytest
+      - run: pytest -q
